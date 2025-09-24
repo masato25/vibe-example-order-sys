@@ -4,6 +4,14 @@
 
 ## 📱 應用預覽
 
+### 🌐 在線預覽
+[![立即體驗](https://img.shields.io/badge/🚀_立即體驗-Live_Demo-blue?style=for-the-badge)](https://raw.githack.com/masato25/vibe-example-order-sys/main/index.html)
+
+> **🔗 預覽方式:**
+> - **直接預覽**: https://raw.githack.com/masato25/vibe-example-order-sys/main/index.html
+> - **CodeSandbox**: https://codesandbox.io/s/github/masato25/vibe-example-order-sys
+
+### 📸 應用截圖
 <div align="center">
   <img src="preview.png" alt="應用程式預覽圖" width="800">
   <p><em>響應式設計，完美適配各種設備</em></p>
@@ -90,13 +98,26 @@ comac/
 └── README.md                   # 說明文件
 ```
 
-## 🛠️ 使用方法
+## � 快速開始
+
+### 🌐 在線體驗
+點擊上方的 **立即體驗** 按鈕即可直接在瀏覽器中體驗應用！
+
+### 📋 GitHub Pages 設置指南
+1. 進入你的 GitHub 倉庫設置頁面
+2. 滾動到 "Pages" 部分
+3. 選擇 "Deploy from a branch"
+4. 選擇 "main" 分支
+5. 點擊 "Save"
+
+幾分鐘後，你的應用就會在 `https://masato25.github.io/vibe-example-order-sys/` 上線！
+
+## �🛠️ 使用方法
 
 ### 1. 本地運行
 ```bash
 # 複製專案
 git clone [repository-url]
-cd comac
 
 # 使用任何HTTP服務器運行，例如：
 # 使用Python
