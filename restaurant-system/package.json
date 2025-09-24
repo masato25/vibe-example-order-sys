@@ -1,0 +1,37 @@
+{
+  "name": "restaurant-ordering-system",
+  "version": "1.0.0",
+  "description": "Complete restaurant ordering system with Directus, Vue, and microservices",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "microservices/*"
+  ],
+  "scripts": {
+    "dev": "docker-compose -f docker/docker-compose.dev.yml up",
+    "prod": "docker-compose -f docker/docker-compose.prod.yml up -d",
+    "setup": "node scripts/setup.js",
+    "test": "npm run test:frontend && npm run test:microservices",
+    "test:frontend": "cd frontend && npm test",
+    "test:microservices": "cd microservices && python -m pytest",
+    "build": "npm run build:frontend && npm run build:microservices",
+    "build:frontend": "cd frontend && npm run build",
+    "build:microservices": "docker-compose -f docker/docker-compose.prod.yml build",
+    "clean": "docker-compose down -v && docker system prune -f"
+  },
+  "keywords": [
+    "restaurant",
+    "ordering",
+    "directus",
+    "vue",
+    "microservices",
+    "docker"
+  ],
+  "author": "Restaurant System",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3"
+  }
+}

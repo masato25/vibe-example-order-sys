@@ -1,0 +1,548 @@
+{
+  "version": 1,
+  "directus": "10.8.3",
+  "vendor": "postgres",
+  "collections": [
+    {
+      "collection": "categories",
+      "meta": {
+        "accountability": "all",
+        "archive_app_filter": false,
+        "archive_field": null,
+        "archive_value": null,
+        "collapse": "open",
+        "collection": "categories",
+        "color": "#2ECDA7",
+        "display_template": "{{name}}",
+        "group": null,
+        "hidden": false,
+        "icon": "category",
+        "item_duplication_fields": null,
+        "note": null,
+        "preview_url": null,
+        "singleton": false,
+        "sort": 1,
+        "sort_field": "sort_order",
+        "translations": null,
+        "unarchive_value": null,
+        "versioning": false
+      },
+      "schema": {
+        "name": "categories"
+      }
+    },
+    {
+      "collection": "menu_items",
+      "meta": {
+        "accountability": "all",
+        "archive_app_filter": false,
+        "archive_field": null,
+        "archive_value": null,
+        "collapse": "open",
+        "collection": "menu_items",
+        "color": "#A23B72",
+        "display_template": "{{name}} - ${{price}}",
+        "group": null,
+        "hidden": false,
+        "icon": "restaurant_menu",
+        "item_duplication_fields": null,
+        "note": null,
+        "preview_url": null,
+        "singleton": false,
+        "sort": 2,
+        "sort_field": "sort_order",
+        "translations": null,
+        "unarchive_value": null,
+        "versioning": false
+      },
+      "schema": {
+        "name": "menu_items"
+      }
+    },
+    {
+      "collection": "customers",
+      "meta": {
+        "accountability": "all",
+        "archive_app_filter": false,
+        "archive_field": null,
+        "archive_value": null,
+        "collapse": "open",
+        "collection": "customers",
+        "color": "#6644FF",
+        "display_template": "{{first_name}} {{last_name}} ({{email}})",
+        "group": null,
+        "hidden": false,
+        "icon": "people",
+        "item_duplication_fields": null,
+        "note": null,
+        "preview_url": null,
+        "singleton": false,
+        "sort": 3,
+        "sort_field": null,
+        "translations": null,
+        "unarchive_value": null,
+        "versioning": false
+      },
+      "schema": {
+        "name": "customers"
+      }
+    },
+    {
+      "collection": "customer_addresses",
+      "meta": {
+        "accountability": "all",
+        "archive_app_filter": false,
+        "archive_field": null,
+        "archive_value": null,
+        "collapse": "open",
+        "collection": "customer_addresses",
+        "color": "#00C897",
+        "display_template": "{{label}}: {{street_address}}, {{city}}",
+        "group": null,
+        "hidden": false,
+        "icon": "location_on",
+        "item_duplication_fields": null,
+        "note": null,
+        "preview_url": null,
+        "singleton": false,
+        "sort": 4,
+        "sort_field": null,
+        "translations": null,
+        "unarchive_value": null,
+        "versioning": false
+      },
+      "schema": {
+        "name": "customer_addresses"
+      }
+    },
+    {
+      "collection": "orders",
+      "meta": {
+        "accountability": "all",
+        "archive_app_filter": false,
+        "archive_field": null,
+        "archive_value": null,
+        "collapse": "open",
+        "collection": "orders",
+        "color": "#F7971E",
+        "display_template": "Order #{{order_number}} - {{status}}",
+        "group": null,
+        "hidden": false,
+        "icon": "receipt_long",
+        "item_duplication_fields": null,
+        "note": null,
+        "preview_url": null,
+        "singleton": false,
+        "sort": 5,
+        "sort_field": "created_at",
+        "translations": null,
+        "unarchive_value": null,
+        "versioning": false
+      },
+      "schema": {
+        "name": "orders"
+      }
+    },
+    {
+      "collection": "order_items",
+      "meta": {
+        "accountability": "all",
+        "archive_app_filter": false,
+        "archive_field": null,
+        "archive_value": null,
+        "collapse": "open",
+        "collection": "order_items",
+        "color": "#FFD23F",
+        "display_template": "{{quantity}}x {{menu_item_name}}",
+        "group": null,
+        "hidden": false,
+        "icon": "shopping_cart",
+        "item_duplication_fields": null,
+        "note": null,
+        "preview_url": null,
+        "singleton": false,
+        "sort": 6,
+        "sort_field": null,
+        "translations": null,
+        "unarchive_value": null,
+        "versioning": false
+      },
+      "schema": {
+        "name": "order_items"
+      }
+    },
+    {
+      "collection": "restaurant_settings",
+      "meta": {
+        "accountability": "all",
+        "archive_app_filter": false,
+        "archive_field": null,
+        "archive_value": null,
+        "collapse": "open",
+        "collection": "restaurant_settings",
+        "color": "#3498DB",
+        "display_template": "{{key}}",
+        "group": null,
+        "hidden": false,
+        "icon": "settings",
+        "item_duplication_fields": null,
+        "note": null,
+        "preview_url": null,
+        "singleton": false,
+        "sort": 7,
+        "sort_field": null,
+        "translations": null,
+        "unarchive_value": null,
+        "versioning": false
+      },
+      "schema": {
+        "name": "restaurant_settings"
+      }
+    },
+    {
+      "collection": "promotions",
+      "meta": {
+        "accountability": "all",
+        "archive_app_filter": false,
+        "archive_field": null,
+        "archive_value": null,
+        "collapse": "open",
+        "collection": "promotions",
+        "color": "#E74C3C",
+        "display_template": "{{name}} ({{code}})",
+        "group": null,
+        "hidden": false,
+        "icon": "local_offer",
+        "item_duplication_fields": null,
+        "note": null,
+        "preview_url": null,
+        "singleton": false,
+        "sort": 8,
+        "sort_field": null,
+        "translations": null,
+        "unarchive_value": null,
+        "versioning": false
+      },
+      "schema": {
+        "name": "promotions"
+      }
+    },
+    {
+      "collection": "reviews",
+      "meta": {
+        "accountability": "all",
+        "archive_app_filter": false,
+        "archive_field": null,
+        "archive_value": null,
+        "collapse": "open",
+        "collection": "reviews",
+        "color": "#9B59B6",
+        "display_template": "{{rating}} stars - {{comment}}",
+        "group": null,
+        "hidden": false,
+        "icon": "star",
+        "item_duplication_fields": null,
+        "note": null,
+        "preview_url": null,
+        "singleton": false,
+        "sort": 9,
+        "sort_field": "created_at",
+        "translations": null,
+        "unarchive_value": null,
+        "versioning": false
+      },
+      "schema": {
+        "name": "reviews"
+      }
+    },
+    {
+      "collection": "inventory",
+      "meta": {
+        "accountability": "all",
+        "archive_app_filter": false,
+        "archive_field": null,
+        "archive_value": null,
+        "collapse": "open",
+        "collection": "inventory",
+        "color": "#1ABC9C",
+        "display_template": "{{menu_item_id}} - Stock: {{current_stock}}",
+        "group": null,
+        "hidden": false,
+        "icon": "inventory",
+        "item_duplication_fields": null,
+        "note": null,
+        "preview_url": null,
+        "singleton": false,
+        "sort": 10,
+        "sort_field": null,
+        "translations": null,
+        "unarchive_value": null,
+        "versioning": false
+      },
+      "schema": {
+        "name": "inventory"
+      }
+    }
+  ],
+  "fields": [
+    {
+      "collection": "categories",
+      "field": "id",
+      "type": "integer",
+      "meta": {
+        "collection": "categories",
+        "conditions": null,
+        "display": null,
+        "display_options": null,
+        "field": "id",
+        "group": null,
+        "hidden": true,
+        "interface": "input",
+        "note": null,
+        "options": null,
+        "readonly": true,
+        "required": false,
+        "sort": 1,
+        "special": null,
+        "translations": null,
+        "validation": null,
+        "validation_message": null,
+        "width": "full"
+      },
+      "schema": {
+        "name": "id",
+        "table": "categories",
+        "data_type": "integer",
+        "default_value": "nextval('categories_id_seq'::regclass)",
+        "max_length": null,
+        "numeric_precision": 32,
+        "numeric_scale": 0,
+        "is_nullable": false,
+        "is_unique": true,
+        "is_primary_key": true,
+        "has_auto_increment": true,
+        "foreign_key_column": null,
+        "foreign_key_table": null,
+        "comment": ""
+      }
+    },
+    {
+      "collection": "categories",
+      "field": "name",
+      "type": "string",
+      "meta": {
+        "collection": "categories",
+        "conditions": null,
+        "display": null,
+        "display_options": null,
+        "field": "name",
+        "group": null,
+        "hidden": false,
+        "interface": "input",
+        "note": null,
+        "options": null,
+        "readonly": false,
+        "required": true,
+        "sort": 2,
+        "special": null,
+        "translations": null,
+        "validation": null,
+        "validation_message": null,
+        "width": "full"
+      },
+      "schema": {
+        "name": "name",
+        "table": "categories",
+        "data_type": "character varying",
+        "default_value": null,
+        "max_length": 255,
+        "numeric_precision": null,
+        "numeric_scale": null,
+        "is_nullable": false,
+        "is_unique": false,
+        "is_primary_key": false,
+        "has_auto_increment": false,
+        "foreign_key_column": null,
+        "foreign_key_table": null,
+        "comment": ""
+      }
+    },
+    {
+      "collection": "categories",
+      "field": "description",
+      "type": "text",
+      "meta": {
+        "collection": "categories",
+        "conditions": null,
+        "display": null,
+        "display_options": null,
+        "field": "description",
+        "group": null,
+        "hidden": false,
+        "interface": "input-multiline",
+        "note": null,
+        "options": null,
+        "readonly": false,
+        "required": false,
+        "sort": 3,
+        "special": null,
+        "translations": null,
+        "validation": null,
+        "validation_message": null,
+        "width": "full"
+      }
+    },
+    {
+      "collection": "categories",
+      "field": "image",
+      "type": "string",
+      "meta": {
+        "collection": "categories",
+        "conditions": null,
+        "display": null,
+        "display_options": null,
+        "field": "image",
+        "group": null,
+        "hidden": false,
+        "interface": "file-image",
+        "note": null,
+        "options": null,
+        "readonly": false,
+        "required": false,
+        "sort": 4,
+        "special": ["file"],
+        "translations": null,
+        "validation": null,
+        "validation_message": null,
+        "width": "full"
+      }
+    },
+    {
+      "collection": "categories",
+      "field": "sort_order",
+      "type": "integer",
+      "meta": {
+        "collection": "categories",
+        "conditions": null,
+        "display": null,
+        "display_options": null,
+        "field": "sort_order",
+        "group": null,
+        "hidden": false,
+        "interface": "input",
+        "note": null,
+        "options": null,
+        "readonly": false,
+        "required": false,
+        "sort": 5,
+        "special": null,
+        "translations": null,
+        "validation": null,
+        "validation_message": null,
+        "width": "half"
+      }
+    },
+    {
+      "collection": "categories",
+      "field": "is_active",
+      "type": "boolean",
+      "meta": {
+        "collection": "categories",
+        "conditions": null,
+        "display": null,
+        "display_options": null,
+        "field": "is_active",
+        "group": null,
+        "hidden": false,
+        "interface": "boolean",
+        "note": null,
+        "options": null,
+        "readonly": false,
+        "required": false,
+        "sort": 6,
+        "special": null,
+        "translations": null,
+        "validation": null,
+        "validation_message": null,
+        "width": "half"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "collection": "menu_items",
+      "field": "category_id",
+      "related_collection": "categories",
+      "schema": {
+        "table": "menu_items",
+        "column": "category_id",
+        "foreign_key_table": "categories",
+        "foreign_key_column": "id",
+        "constraint_name": "menu_items_category_id_foreign",
+        "on_update": "NO ACTION",
+        "on_delete": "SET NULL"
+      },
+      "meta": {
+        "many_collection": "menu_items",
+        "many_field": "category_id",
+        "one_collection": "categories",
+        "one_field": "menu_items",
+        "one_collection_field": null,
+        "one_allowed_collections": null,
+        "junction_field": null,
+        "sort_field": null,
+        "one_deselect_action": "nullify"
+      }
+    },
+    {
+      "collection": "order_items",
+      "field": "order_id",
+      "related_collection": "orders",
+      "schema": {
+        "table": "order_items",
+        "column": "order_id",
+        "foreign_key_table": "orders",
+        "foreign_key_column": "id",
+        "constraint_name": "order_items_order_id_foreign",
+        "on_update": "NO ACTION",
+        "on_delete": "CASCADE"
+      },
+      "meta": {
+        "many_collection": "order_items",
+        "many_field": "order_id",
+        "one_collection": "orders",
+        "one_field": "order_items",
+        "one_collection_field": null,
+        "one_allowed_collections": null,
+        "junction_field": null,
+        "sort_field": null,
+        "one_deselect_action": "delete"
+      }
+    },
+    {
+      "collection": "order_items",
+      "field": "menu_item_id",
+      "related_collection": "menu_items",
+      "schema": {
+        "table": "order_items",
+        "column": "menu_item_id",
+        "foreign_key_table": "menu_items",
+        "foreign_key_column": "id",
+        "constraint_name": "order_items_menu_item_id_foreign",
+        "on_update": "NO ACTION",
+        "on_delete": "SET NULL"
+      },
+      "meta": {
+        "many_collection": "order_items",
+        "many_field": "menu_item_id",
+        "one_collection": "menu_items",
+        "one_field": "order_items",
+        "one_collection_field": null,
+        "one_allowed_collections": null,
+        "junction_field": null,
+        "sort_field": null,
+        "one_deselect_action": "nullify"
+      }
+    }
+  ]
+}

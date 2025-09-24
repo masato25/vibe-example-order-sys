@@ -1,0 +1,171 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    container_name: restaurant-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: restaurant_db
+      POSTGRES_USER: restaurant_user
+      POSTGRES_PASSWORD: secure_password_123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/directus/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./backend/directus/sample-data.sql:/docker-entrypoint-initdb.d/02-sample-data.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - restaurant-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U restaurant_user -d restaurant_db"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Redis for caching and sessions  
+  redis:
+    image: redis:7-alpine
+    container_name: restaurant-redis
+    restart: unless-stopped
+    command: redis-server --requirepass redis_password_123 --appendonly yes
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - restaurant-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Directus CMS
+  directus:
+    image: directus/directus:10.8.3
+    container_name: restaurant-directus
+    restart: unless-stopped
+    environment:
+      KEY: directus-restaurant-key-2024
+      SECRET: directus-super-secret-key-change-in-production
+      DB_CLIENT: pg
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_DATABASE: restaurant_db
+      DB_USER: restaurant_user
+      DB_PASSWORD: secure_password_123
+      CACHE_ENABLED: true
+      CACHE_STORE: redis
+      CACHE_REDIS: redis://redis:6379/0
+      CACHE_REDIS_PASSWORD: redis_password_123
+      ADMIN_EMAIL: admin@restaurant.com
+      ADMIN_PASSWORD: AdminPass123!
+      PUBLIC_URL: http://localhost:8055
+      CORS_ENABLED: true
+      CORS_ORIGIN: true
+      ASSETS_TRANSFORM_IMAGE_MAX_DIMENSION: 2000
+    volumes:
+      - directus_uploads:/directus/uploads
+      - ./backend/directus/extensions:/directus/extensions
+      - ./backend/directus/init.sh:/docker-entrypoint-initdb.d/init.sh
+    ports:
+      - "8055:8055"
+    networks:
+      - restaurant-network
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8055/server/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Pricing Microservice
+  pricing-service:
+    build:
+      context: ./microservices/pricing-service
+      dockerfile: Dockerfile
+    container_name: restaurant-pricing-service
+    restart: unless-stopped
+    environment:
+      DIRECTUS_URL: http://directus:8055
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: redis_password_123
+      TAX_RATE: 0.0875
+      DELIVERY_FEE: 3.99
+      FREE_DELIVERY_MINIMUM: 25.00
+    ports:
+      - "8001:8001"
+    networks:
+      - restaurant-network
+    depends_on:
+      directus:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./microservices/pricing-service:/app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Vue Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: restaurant-frontend
+    restart: unless-stopped
+    environment:
+      VITE_API_URL: http://localhost:8055
+      VITE_DIRECTUS_URL: http://localhost:8055
+      VITE_MICROSERVICES_URL: http://localhost:8001
+      NODE_ENV: development
+    ports:
+      - "3000:3000"
+    networks:
+      - restaurant-network
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - directus
+      - pricing-service
+    command: npm run dev
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: restaurant-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - restaurant-network
+    depends_on:
+      - frontend
+      - directus
+      - pricing-service
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  directus_uploads:
+    driver: local
+
+networks:
+  restaurant-network:
+    driver: bridge
