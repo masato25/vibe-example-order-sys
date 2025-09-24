@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美食點餐 - Mobile & Desktop</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#ff6b35">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="美食點餐">
+    <meta name="description" content="現代化響應式點餐應用程式，適用於手機和桌面設備">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23ff6b35'/%3E%3Ctext x='50' y='60' font-family='Arial' font-size='40' fill='white' text-anchor='middle'%3E🍽️%3C/text%3E%3C/svg%3E">
+    
+    <!-- Microsoft Tiles -->
+    <meta name="msapplication-TileColor" content="#ff6b35">
+    <meta name="msapplication-TileImage" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23ff6b35'/%3E%3Ctext x='50' y='60' font-family='Arial' font-size='40' fill='white' text-anchor='middle'%3E🍽️%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+    <!-- 頂部導航 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-utensils"></i>
+                <span>美食點餐</span>
+            </div>
+            <div class="nav-cart">
+                <button class="cart-btn" onclick="toggleCart()">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要內容區域 -->
+    <main class="main-content">
+        <!-- 分類選單 -->
+        <section class="category-section">
+            <div class="category-tabs">
+                <button class="category-tab active" data-category="all">全部</button>
+                <button class="category-tab" data-category="appetizer">開胃菜</button>
+                <button class="category-tab" data-category="main">主餐</button>
+                <button class="category-tab" data-category="dessert">甜點</button>
+                <button class="category-tab" data-category="drink">飲品</button>
+            </div>
+        </section>
+
+        <!-- 商品展示區 -->
+        <section class="menu-section">
+            <div class="menu-grid" id="menuGrid">
+                <!-- 商品項目將通過JavaScript動態生成 -->
+            </div>
+        </section>
+    </main>
+
+    <!-- 購物車側邊欄 -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>購物車</h3>
+            <button class="close-cart" onclick="toggleCart()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- 購物車項目將通過JavaScript動態生成 -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>總計: NT$ <span id="cartTotal">0</span></span>
+            </div>
+            <button class="checkout-btn" onclick="checkout()">
+                <i class="fas fa-credit-card"></i>
+                結帳
+            </button>
+        </div>
+    </div>
+
+    <!-- 購物車遮罩 -->
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+
+    <!-- 結帳彈窗 -->
+    <div class="checkout-modal" id="checkoutModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>確認訂單</h3>
+                <button class="close-modal" onclick="closeCheckoutModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="order-summary" id="orderSummary">
+                    <!-- 訂單摘要將通過JavaScript生成 -->
+                </div>
+                <form class="checkout-form" id="checkoutForm">
+                    <div class="form-group">
+                        <label for="customerName">姓名 *</label>
+                        <input type="text" id="customerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerPhone">電話 *</label>
+                        <input type="tel" id="customerPhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerAddress">地址</label>
+                        <textarea id="customerAddress" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="orderNotes">備註</label>
+                        <textarea id="orderNotes" rows="2" placeholder="特殊要求或備註..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="final-total">
+                    總金額: NT$ <span id="finalTotal">0</span>
+                </div>
+                <button class="confirm-order-btn" onclick="confirmOrder()">
+                    <i class="fas fa-check"></i>
+                    確認訂單
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 訂單成功提示 -->
+    <div class="success-message" id="successMessage">
+        <div class="success-content">
+            <i class="fas fa-check-circle"></i>
+            <h3>訂單成功！</h3>
+            <p>您的訂單已提交，我們將盡快為您準備。</p>
+            <button onclick="closeSuccessMessage()">確定</button>
+        </div>
+    </div>
+
+        <!-- 模組化腳本 -->
+    <!-- 配置和數據 -->
+    <script src="js/config/Config.js"></script>
+    <script src="js/data/MockData.js"></script>
+    
+    <!-- 工具函數 -->
+    <script src="js/utils/UtilityFunctions.js"></script>
+    
+    <!-- 服務層 -->
+    <script src="js/services/StorageService.js"></script>
+    <script src="js/services/StateManager.js"></script>
+    <script src="js/services/ApiService.js"></script>
+    
+    <!-- 組件層 -->
+    <script src="js/components/MenuComponent.js"></script>
+    <script src="js/components/CartComponent.js"></script>
+    <script src="js/components/CheckoutComponent.js"></script>
+    
+    <!-- 主應用程式 -->
+    <script src="js/app.js"></script>
+
+    <!-- 載入畫面 -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h3>美食點餐</h3>
+            <p>正在載入中...</p>
+        </div>
+    </div>
+
+    <!-- 錯誤畫面 -->
+    <div id="error-screen" class="error-screen" style="display: none;">
+        <div class="error-content">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h3>載入失敗</h3>
+            <p class="error-message">應用程式初始化失敗</p>
+            <button onclick="location.reload()" class="btn btn-primary">重新載入</button>
+        </div>
+    </div>
+
+    <!-- 網路狀態指示器 -->
+    <div id="network-status" class="network-status" style="display: none;">
+        <i class="fas fa-wifi"></i>
+        <span>離線模式</span>
+    </div>
+</body>
+</html>
