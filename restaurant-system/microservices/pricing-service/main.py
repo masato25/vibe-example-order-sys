@@ -1,12 +1,10 @@
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from typing import List, Optional
-import asyncio
 import httpx
 import os
-from decimal import Decimal
-from datetime import datetime, timedelta
+from datetime import datetime
 import redis
 import json
 

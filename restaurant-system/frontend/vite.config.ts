@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { VitePWA } from 'vite-plugin-pwa'
-import path from 'path'
+import { fileURLToPath, URL } from 'url'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -10,38 +10,37 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,gif,woff,woff2}'],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
         runtimeCaching: [
           {
-            urlPattern: /^https:\/\/api\./,
+            urlPattern: /^https:\/\/api\./i,
             handler: 'NetworkFirst',
             options: {
               cacheName: 'api-cache',
-              expiration: {
-                maxEntries: 100,
-                maxAgeSeconds: 60 * 60 * 24 // 24 hours
+              networkTimeoutSeconds: 10,
+              cacheableResponse: {
+                statuses: [0, 200]
               }
             }
           }
         ]
       },
+      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
       manifest: {
         name: 'Restaurant Ordering System',
-        short_name: 'RestaurantApp',
-        description: 'Order your favorite food with ease',
-        theme_color: '#2563eb',
+        short_name: 'Restaurant',
+        description: 'Modern restaurant ordering system',
+        theme_color: '#ffffff',
         background_color: '#ffffff',
         display: 'standalone',
-        orientation: 'portrait',
-        start_url: '/',
         icons: [
           {
-            src: '/icons/icon-192x192.png',
+            src: 'pwa-192x192.png',
             sizes: '192x192',
             type: 'image/png'
           },
           {
-            src: '/icons/icon-512x512.png',
+            src: 'pwa-512x512.png',
             sizes: '512x512',
             type: 'image/png'
           }
@@ -51,41 +50,40 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
-      '~': path.resolve(__dirname, './src')
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      '~': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
   server: {
-    port: 3000,
+    port: 5173,
     host: true,
     proxy: {
       '/api': {
         target: 'http://localhost:8055',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
+        secure: false,
+        rewrite: (path: string) => path.replace(/^\/api/, '')
       },
       '/microservices': {
-        target: 'http://localhost:8000',
+        target: 'http://localhost:3001',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/microservices/, '')
+        rewrite: (path: string) => path.replace(/^\/microservices/, '')
       }
     }
   },
   build: {
-    outDir: 'dist',
-    sourcemap: process.env.NODE_ENV === 'development',
+    target: 'esnext',
+    sourcemap: true,
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ['vue', 'vue-router', 'pinia'],
-          ui: ['@headlessui/vue', '@heroicons/vue'],
-          utils: ['axios', 'date-fns', 'lodash-es']
+          'vue-vendor': ['vue', 'vue-router', 'pinia'],
+          'ui-vendor': ['@headlessui/vue', '@heroicons/vue']
         }
       }
     }
   },
-  test: {
-    globals: true,
-    environment: 'jsdom'
+  optimizeDeps: {
+    include: ['vue', 'vue-router', 'pinia', 'axios']
   }
 })
